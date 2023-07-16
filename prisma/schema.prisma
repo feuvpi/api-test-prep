@@ -1,0 +1,48 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator erd {
+  provider = "prisma-erd-generator"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id       String   @id @default(uuid())
+  email    String   @unique
+  password String
+  Answer   Answer[]
+
+  @@map("users")
+}
+
+model Question {
+  id                String   @id @default(uuid())
+  question          String   @unique
+  alternative_one   String
+  alternative_two   String
+  alternative_three String
+  alternative_four  String
+  alternative_five  String
+  answer            String
+  explanation       String
+  Answer            Answer[]
+}
+
+model Answer {
+  id         String   @id @default(uuid())
+  question   Question @relation(fields: [questionId], references: [id])
+  questionId String
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  Match      Boolean
+
+  @@map("answers")
+}
