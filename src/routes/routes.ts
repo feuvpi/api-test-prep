@@ -38,7 +38,6 @@ export async function appRoutes(app: FastifyInstance) {
       }
   });
 
-
   // -- rota de autenticacao
   app.post('/login', async (request) => {
       const getUser = z.object({
